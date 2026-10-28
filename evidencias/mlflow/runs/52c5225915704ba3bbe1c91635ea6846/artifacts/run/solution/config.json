@@ -1,0 +1,100 @@
+{
+  "experiment_id": "e1_logreg_base",
+  "family": "lineal",
+  "threshold": 0.5,
+  "threshold_rule": "y_pred = 1 (ataque) si score_attack >= threshold",
+  "threshold_policy": {
+    "type": "fixed",
+    "value": 0.5
+  },
+  "positive_class": 1,
+  "features": [
+    "dur",
+    "proto",
+    "service",
+    "state",
+    "spkts",
+    "dpkts",
+    "sbytes",
+    "dbytes",
+    "rate",
+    "sttl",
+    "dttl",
+    "sload",
+    "dload",
+    "sloss",
+    "dloss",
+    "sinpkt",
+    "dinpkt",
+    "sjit",
+    "djit",
+    "swin",
+    "stcpb",
+    "dtcpb",
+    "dwin",
+    "tcprtt",
+    "synack",
+    "ackdat",
+    "smean",
+    "dmean",
+    "trans_depth",
+    "response_body_len",
+    "ct_srv_src",
+    "ct_state_ttl",
+    "ct_dst_ltm",
+    "ct_src_dport_ltm",
+    "ct_dst_sport_ltm",
+    "ct_dst_src_ltm",
+    "is_ftp_login",
+    "ct_ftp_cmd",
+    "ct_flw_http_mthd",
+    "ct_src_ltm",
+    "ct_srv_dst",
+    "is_sm_ips_ports"
+  ],
+  "categorical_features": [
+    "proto",
+    "service",
+    "state"
+  ],
+  "model_file": "model.joblib",
+  "model_sha256": "cd0d72260f75535658480f24ab1b3b2a725cae1b64c526b48e690642b4756807",
+  "preprocessing": {
+    "scale": true,
+    "log1p": false,
+    "min_frequency": 20
+  },
+  "estimator": {
+    "estimator": "logistic_regression",
+    "params": {
+      "C": 1.0,
+      "max_iter": 2000
+    }
+  },
+  "seed": 2026,
+  "git_commit": "bec239b75d48d6df9311545c4456c78339f4344e",
+  "dvc": {
+    "raw_md5": "688fd73cceff08e318906ecd85de60c4.dir",
+    "prepared_md5": "5832cbec6fbaff34eaf128c733c18932.dir"
+  },
+  "validation_metrics": {
+    "recall_attack": 0.9887608069164265,
+    "precision_attack": 0.9279780533982458,
+    "fpr": 0.17030607583371402,
+    "f1_attack": 0.9574056725997089,
+    "f1_normal": 0.8947238780235479,
+    "macro_f1": 0.9260647753116285,
+    "accuracy": 0.939350078047396,
+    "confusion_matrix": {
+      "tn": 9081,
+      "fp": 1864,
+      "fn": 273,
+      "tp": 24017
+    },
+    "n": 35235,
+    "undefined_metrics": []
+  },
+  "python": "3.10.12",
+  "sklearn": "1.7.2",
+  "mlflow_run_id": "52c5225915704ba3bbe1c91635ea6846"
+}

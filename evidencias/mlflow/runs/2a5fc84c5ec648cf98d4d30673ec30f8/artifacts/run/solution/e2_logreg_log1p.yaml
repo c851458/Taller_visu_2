@@ -1,0 +1,19 @@
+id: e2_logreg_log1p
+family: lineal
+hypothesis: >
+  Muchas variables (bytes, cargas, tiempos) tienen colas muy largas. Aplicar
+  log1p antes de escalar debería volver las relaciones más lineales y reducir
+  falsos positivos respecto a E1.
+change: "Respecto a E1: se añade log1p a las variables numéricas."
+preprocessing:
+  scale: true
+  log1p: true
+  min_frequency: 20
+model:
+  estimator: logistic_regression
+  params:
+    C: 1.0
+    max_iter: 2000
+threshold_policy:
+  type: fixed
+  value: 0.5

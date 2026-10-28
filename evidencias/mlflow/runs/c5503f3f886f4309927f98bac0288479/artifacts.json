@@ -1,0 +1,75 @@
+{
+  "run_id": "c5503f3f886f4309927f98bac0288479",
+  "max_copy_bytes": 5242880,
+  "logged_models": [
+    "m-cd904c610d104c3f87c88cb0d57d130e"
+  ],
+  "files": [
+    {
+      "path": "run/solution/config.json",
+      "bytes": 2165,
+      "sha256": "170b07d30c18443827cc55a694b35905ea33785dedfef0b10e1f2c2a8256ee17",
+      "copied": true
+    },
+    {
+      "path": "run/solution/e4_hgb_threshold.yaml",
+      "bytes": 639,
+      "sha256": "0ca14c048998422a07781fa0646d347bbb32db0f2c0a679a65e6db5ba8412a0d",
+      "copied": true
+    },
+    {
+      "path": "run/solution/model.joblib",
+      "bytes": 2231074,
+      "sha256": "689fb002a0eaa577af78ee78cec88043a53e93fc17ae96a4f8aba4c93dda03e9",
+      "copied": true
+    },
+    {
+      "path": "run/validation_metrics.json",
+      "bytes": 384,
+      "sha256": "8ef897445489320cb67a22039baf37a7cf8138cd633114e55b61635c4659db39",
+      "copied": true
+    },
+    {
+      "path": "logged_model/m-cd904c610d104c3f87c88cb0d57d130e/artifacts/MLmodel",
+      "bytes": 3605,
+      "sha256": "2bd3f0c74d5a0e8c42c1f28200bee82a1cd049bd7b043827c8ae9d78d117168e",
+      "copied": true
+    },
+    {
+      "path": "logged_model/m-cd904c610d104c3f87c88cb0d57d130e/artifacts/conda.yaml",
+      "bytes": 245,
+      "sha256": "b423087844d272121dc9ea78f4e898d7b8abdbd45a983ab911c7d2b27f909a4d",
+      "copied": true
+    },
+    {
+      "path": "logged_model/m-cd904c610d104c3f87c88cb0d57d130e/artifacts/input_example.json",
+      "bytes": 1794,
+      "sha256": "dabccc7df81cec529a3fe490ec85d85de24208c50fbbbf91ce7aa5ae07e8da76",
+      "copied": true
+    },
+    {
+      "path": "logged_model/m-cd904c610d104c3f87c88cb0d57d130e/artifacts/model.skops",
+      "bytes": 4103341,
+      "sha256": "85e3cdf8a8f8700b4d4ab624d564358c95e1182e652361f511758bfa32c93e13",
+      "copied": true
+    },
+    {
+      "path": "logged_model/m-cd904c610d104c3f87c88cb0d57d130e/artifacts/python_env.yaml",
+      "bytes": 115,
+      "sha256": "52baba840e7616a1437c52785c2663c2e726dbfe359b7e2c70e3b2662fbf56fd",
+      "copied": true
+    },
+    {
+      "path": "logged_model/m-cd904c610d104c3f87c88cb0d57d130e/artifacts/requirements.txt",
+      "bytes": 119,
+      "sha256": "91e44a2ae40e9df59f18c4b619400591ced5c094a68efcd43dd24f525ebb3b61",
+      "copied": true
+    },
+    {
+      "path": "logged_model/m-cd904c610d104c3f87c88cb0d57d130e/artifacts/serving_input_example.json",
+      "bytes": 3845,
+      "sha256": "80b2f544c75b66fb2e161823791d9445c110c6cb1b5b643eb766fc5889349b85",
+      "copied": true
+    }
+  ]
+}

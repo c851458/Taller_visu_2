@@ -1,0 +1,20 @@
+id: e3_random_forest
+family: arboles
+hypothesis: >
+  Un bosque aleatorio captura interacciones no lineales (p. ej. ttl x servicio)
+  que la regresión logística no modela, y debería mejorar macro-F1 sin
+  necesidad de transformar las escalas.
+change: "Cambio de familia: árboles (Random Forest, 200 árboles)."
+preprocessing:
+  scale: false
+  log1p: false
+  min_frequency: 20
+model:
+  estimator: random_forest
+  params:
+    n_estimators: 200
+    min_samples_leaf: 2
+    n_jobs: -1
+threshold_policy:
+  type: fixed
+  value: 0.5

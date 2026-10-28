@@ -8,11 +8,45 @@ Uso: python -m src.export_mlflow
 from __future__ import annotations
 
 import shutil
+import tempfile
+from pathlib import Path
 
+import mlflow
 import pandas as pd
 from mlflow.tracking import MlflowClient
 
-from src.common import ROOT, load_params, load_yaml, write_json
+from src.common import ROOT, load_params, load_yaml, sha256_file, write_json
+
+MAX_COPY_BYTES = 5 * 1024 * 1024  # artefactos mayores (modelo de E3, ~110 MB) solo se listan con su hash
+
+
+def export_artifacts(client: MlflowClient, experiment_id: str, run_id: str, run_dir: Path) -> dict:
+    """Copia los artefactos del run y de su modelo registrado (MLflow LoggedModel) a run_dir/artifacts/
+    y devuelve un manifiesto con tamaño y SHA-256 de cada archivo, copiado o no."""
+    sources = {"run": None}
+    for m in client.search_logged_models(experiment_ids=[experiment_id],
+                                         filter_string=f"source_run_id = '{run_id}'"):
+        sources[f"logged_model/{m.model_id}"] = m.artifact_location
+    files = []
+    with tempfile.TemporaryDirectory() as tmp:
+        for prefix, location in sources.items():
+            dst = Path(tmp) / prefix
+            dst.mkdir(parents=True)
+            if location is None:
+                client.download_artifacts(run_id, "", str(dst))
+            else:
+                mlflow.artifacts.download_artifacts(artifact_uri=location, dst_path=str(dst))
+            for f in sorted(p for p in dst.rglob("*") if p.is_file()):
+                rel = f"{prefix}/{f.relative_to(dst).as_posix()}"
+                size = f.stat().st_size
+                copied = size <= MAX_COPY_BYTES
+                if copied:
+                    target = run_dir / "artifacts" / rel
+                    target.parent.mkdir(parents=True, exist_ok=True)
+                    shutil.copy2(f, target)
+                files.append({"path": rel, "bytes": size, "sha256": sha256_file(f), "copied": copied})
+    return {"run_id": run_id, "max_copy_bytes": MAX_COPY_BYTES,
+            "logged_models": [k.split("/", 1)[1] for k in sources if k != "run"], "files": files}
 
 
 def main() -> None:
@@ -44,6 +78,10 @@ def main() -> None:
         write_json(record, run_dir / "run.json")
         for art in ("solution/config.json", "validation_metrics.json"):
             client.download_artifacts(r.info.run_id, art, str(run_dir))
+        manifest = export_artifacts(client, exp.experiment_id, r.info.run_id, run_dir)
+        assert any(f["path"] == "run/solution/model.joblib" and f["sha256"] == r.data.tags["model_sha256"]
+                   for f in manifest["files"]), f"{cfg_id}: el model.joblib del run no coincide con su tag"
+        write_json(manifest, run_dir / "artifacts.json")
         cfg = load_yaml(r.data.tags["config_path"])
         m, p = r.data.metrics, r.data.params
         rows.append({
@@ -77,7 +115,16 @@ def main() -> None:
         "- `all_runs.json`: todos los runs FINISHED (parámetros, métricas, tags).\n"
         "- `runs/<run_id>/`: run usado en `experimentos.csv`, con `config.json` de la "
         "solución (umbral, hash del modelo, commit, DVC) y métricas de validación.\n"
-        "- Cruce: la columna `run_id` de `evidencias/experimentos.csv` es el nombre de la carpeta.\n\n"
+        "- `runs/<run_id>/artifacts.json`: manifiesto de **todos** los artefactos del run "
+        "(`run/...`) y de su modelo registrado en MLflow (`logged_model/<model_id>/...`), con "
+        f"tamaño y SHA-256. Los de hasta {MAX_COPY_BYTES // 2**20} MB se copian en "
+        "`runs/<run_id>/artifacts/` (`copied: true`); el modelo de E3 (~110 MB) solo queda con su hash.\n"
+        "- Cruce: la columna `run_id` de `evidencias/experimentos.csv` es el nombre de la carpeta, y "
+        "`model_sha256` coincide con el `sha256` de `run/solution/model.joblib` en `artifacts.json`.\n"
+        "- Cargar una solución exportada y predecir: "
+        "`python src/predict.py --model-dir evidencias/mlflow/runs/<run_id>/artifacts/run/solution "
+        "--input evidencias/recuperacion/entrada.csv --output salida.csv` "
+        "(comprueba el hash del modelo antes de cargarlo).\n\n"
         "Para abrir la base original: `mlflow ui --backend-store-uri sqlite:///mlflow.db`.\n",
         encoding="utf-8")
     print(table[["id", "run_id", "threshold", "val_recall_attack", "val_precision_attack",
