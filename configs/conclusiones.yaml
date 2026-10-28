@@ -1,0 +1,14 @@
+# Conclusión de validación por experimento (se escribe DESPUÉS de ver los runs,
+# solo con métricas de validación). Revísalas con tus números antes de exportar.
+e1_logreg_base: >
+  Referencia funcional (v1). Recall de ataque muy alto pero FPR alta: casi 1 de
+  cada 6 conexiones normales genera falsa alarma.
+e2_logreg_log1p: >
+  log1p mejora precision y reduce FPR frente a E1 con una pequeña pérdida de
+  recall; la hipótesis se confirma parcialmente, pero la FPR sigue siendo alta.
+e3_random_forest: >
+  El cambio de familia es lo que más ayuda: macro-F1 sube y la FPR baja a menos
+  de 10 % con umbral 0.5, confirmando la importancia de las interacciones.
+e4_hgb_threshold: >
+  Con umbral elegido en validación (FPR <= 5 %) obtiene la mejor precision y
+  macro-F1, cediendo algo de recall. Se elige como v2.

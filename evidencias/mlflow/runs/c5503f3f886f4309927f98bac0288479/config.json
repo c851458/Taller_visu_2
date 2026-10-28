@@ -1,0 +1,102 @@
+{
+  "experiment_id": "e4_hgb_threshold",
+  "family": "arboles",
+  "threshold": 0.6574,
+  "threshold_rule": "y_pred = 1 (ataque) si score_attack >= threshold",
+  "threshold_policy": {
+    "type": "max_recall_at_fpr",
+    "max_fpr": 0.05
+  },
+  "positive_class": 1,
+  "features": [
+    "dur",
+    "proto",
+    "service",
+    "state",
+    "spkts",
+    "dpkts",
+    "sbytes",
+    "dbytes",
+    "rate",
+    "sttl",
+    "dttl",
+    "sload",
+    "dload",
+    "sloss",
+    "dloss",
+    "sinpkt",
+    "dinpkt",
+    "sjit",
+    "djit",
+    "swin",
+    "stcpb",
+    "dtcpb",
+    "dwin",
+    "tcprtt",
+    "synack",
+    "ackdat",
+    "smean",
+    "dmean",
+    "trans_depth",
+    "response_body_len",
+    "ct_srv_src",
+    "ct_state_ttl",
+    "ct_dst_ltm",
+    "ct_src_dport_ltm",
+    "ct_dst_sport_ltm",
+    "ct_dst_src_ltm",
+    "is_ftp_login",
+    "ct_ftp_cmd",
+    "ct_flw_http_mthd",
+    "ct_src_ltm",
+    "ct_srv_dst",
+    "is_sm_ips_ports"
+  ],
+  "categorical_features": [
+    "proto",
+    "service",
+    "state"
+  ],
+  "model_file": "model.joblib",
+  "model_sha256": "689fb002a0eaa577af78ee78cec88043a53e93fc17ae96a4f8aba4c93dda03e9",
+  "preprocessing": {
+    "scale": false,
+    "log1p": false,
+    "min_frequency": 20
+  },
+  "estimator": {
+    "estimator": "hist_gradient_boosting",
+    "params": {
+      "max_iter": 300,
+      "learning_rate": 0.1,
+      "max_leaf_nodes": 63,
+      "early_stopping": false
+    }
+  },
+  "seed": 2026,
+  "git_commit": "057957069ef92fba2a9ebef2c8b70f61fd405c48",
+  "dvc": {
+    "raw_md5": "688fd73cceff08e318906ecd85de60c4.dir",
+    "prepared_md5": "5832cbec6fbaff34eaf128c733c18932.dir"
+  },
+  "validation_metrics": {
+    "recall_attack": 0.9604775627830383,
+    "precision_attack": 0.9770909243204757,
+    "fpr": 0.04997715851987209,
+    "f1_attack": 0.9687130192870637,
+    "f1_normal": 0.9324306147155091,
+    "macro_f1": 0.9505718170012865,
+    "accuracy": 0.9572300269618277,
+    "confusion_matrix": {
+      "tn": 10398,
+      "fp": 547,
+      "fn": 960,
+      "tp": 23330
+    },
+    "n": 35235,
+    "undefined_metrics": []
+  },
+  "python": "3.10.12",
+  "sklearn": "1.7.2",
+  "mlflow_run_id": "c5503f3f886f4309927f98bac0288479"
+}
