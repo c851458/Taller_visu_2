@@ -52,8 +52,8 @@ DAGSHUB_USER=<usuario> DAGSHUB_TOKEN=<token> bash scripts/prueba_recuperacion.sh
 
 ## Tiempo y recursos (Intel i5-10300H, 8 hilos, 8 GB RAM, WSL2, sin GPU)
 - `prepare` (auditoría + particiones): ~16 s
-- Entrenamiento: E1 ~21 s, E2 ~16 s, E3 ~18 s, E4 ~19 s
-- Prueba de recuperación completa (incluye instalar dependencias): `<medir>`
+- Entrenamiento (ajuste del modelo, `fit_seconds` en MLflow): E1 ~19 s, E2 ~21 s, E3 ~29 s, E4 ~32 s (~55 s por experimento con carga de datos y registro; RAM máx. ~0,9 GB)
+- Prueba de recuperación completa (clonar, instalar dependencias, `dvc pull`, descargar v1/v2 y comparar): ~146 s, RAM máx. ~0,2 GB
 
 ## Limitaciones conocidas
 - UNSW-NB15 es un dataset histórico de laboratorio (2015): no demuestra eficacia en una red actual.

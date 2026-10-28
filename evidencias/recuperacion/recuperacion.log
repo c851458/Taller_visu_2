@@ -1,0 +1,56 @@
+== Inicio: 2026-10-28T09:53:19-05:00 | host: LAPTOP-JTVHRRSA | carpeta: /home/carolo06/recuperacion_20261028
+== 1. Código: clonar y fijar la revisión
+Cloning into '/home/carolo06/recuperacion_20261028/proyecto'...
+Note: switching to '3265bc1ef5673900560e42ee7dc5f7804811bd16'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by switching back to a branch.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -c with the switch command. Example:
+
+  git switch -c <new-branch-name>
+
+Or undo this operation with:
+
+  git switch -
+
+Turn off this advice by setting config variable advice.detachedHead to false
+
+HEAD is now at 3265bc1 Recuperación: credenciales DagsHub propias por variables de entorno
+commit 3265bc1ef5673900560e42ee7dc5f7804811bd16
+Recuperación: credenciales DagsHub propias por variables de entorno
+== 1b. Entorno nuevo con dependencias fijadas
+Python 3.10.12
+== 2. Datos: dvc pull desde el remote entregado (caché nueva)
+origin  https://dagshub.com/c851458/Taller_visu_2.dvc   (default)
+credenciales DagsHub de c851458 en .dvc/config.local (token no se muestra)
+A       data/prepared/
+A       data/raw/
+9 files fetched and 7 files added
+Data and pipelines are up to date.
+OK  raw/UNSW_NB15_training-set.csv
+OK  raw/UNSW_NB15_testing-set.csv
+OK  prepared/train.csv
+OK  prepared/val.csv
+OK  prepared/test.csv
+OK  prepared/splits.csv
+OK  entrada_rows_in_recovered_val
+== 3-4. Modelos: descargar v1 y v2 por SHA completo (caché HF nueva) y predecir
+repo=c851458/defiende-servidor-unsw v1=ca61db0e29f5c1816f68790f44d6af65a23ab082 v2=9fb15e97dc936b6ba90bbdc73a8de92781462f75
+Fetching 6 files:   0%|          | 0/6 [00:00<?, ?it/s]Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Fetching 6 files:  17%|█▋        | 1/6 [00:00<00:01,  3.87it/s]Fetching 6 files:  33%|███▎      | 2/6 [00:00<00:00,  6.02it/s]Fetching 6 files:  67%|██████▋   | 4/6 [00:00<00:00, 10.19it/s]Fetching 6 files: 100%|██████████| 6/6 [00:01<00:00,  3.78it/s]Fetching 6 files: 100%|██████████| 6/6 [00:01<00:00,  4.35it/s]
+30 filas -> /home/carolo06/recuperacion_20261028/salidas/despues_v1.csv | modelo sha256=cd0d72260f75535658480f24ab1b3b2a725cae1b64c526b48e690642b4756807 | umbral=0.5 | ataques=19
+Fetching 6 files:   0%|          | 0/6 [00:00<?, ?it/s]Fetching 6 files:  17%|█▋        | 1/6 [00:00<00:00,  5.46it/s]Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Fetching 6 files:  33%|███▎      | 2/6 [00:00<00:00,  6.84it/s]Fetching 6 files:  83%|████████▎ | 5/6 [00:00<00:00, 14.69it/s]Fetching 6 files: 100%|██████████| 6/6 [00:02<00:00,  2.52it/s]
+30 filas -> /home/carolo06/recuperacion_20261028/salidas/despues_v2.csv | modelo sha256=689fb002a0eaa577af78ee78cec88043a53e93fc17ae96a4f8aba4c93dda03e9 | umbral=0.6574 | ataques=17
+== 5. Comparar con las salidas guardadas
+v1: filas=30 y_pred_iguales=True max_diff=0.000e+00
+v2: filas=30 y_pred_iguales=True max_diff=0.000e+00
+RESULTADO: OK
+581853f32175a11e55351b708d4e495490258baa0a0de72fbd34733277d931ab  evidencias/recuperacion/entrada.csv
+2cd03f1a2657326159bb082e76068c605f1db967337e6625228cb87d26f8c561  evidencias/recuperacion/antes_v1.csv
+e2781c481bbb8e9206d8b4460120e980f4998e524e6159837934a8575cfe72dc  evidencias/recuperacion/antes_v2.csv
+2cd03f1a2657326159bb082e76068c605f1db967337e6625228cb87d26f8c561  /home/carolo06/recuperacion_20261028/salidas/despues_v1.csv
+e2781c481bbb8e9206d8b4460120e980f4998e524e6159837934a8575cfe72dc  /home/carolo06/recuperacion_20261028/salidas/despues_v2.csv
