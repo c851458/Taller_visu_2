@@ -1,0 +1,795 @@
+{
+  "nota": "Análisis posterior sobre validación; no se usó para elegir modelo ni umbral y no usa test. attack_cat no es entrada del modelo: solo explica los errores.",
+  "regla": "y_pred = 1 (ataque) si score_attack >= threshold; errores de Normal = falsos positivos, errores de categorías de ataque = falsos negativos",
+  "dataset_val": {
+    "file": "data/prepared/val.csv",
+    "sha256": "cb4b41bf3b84db66866cd1474a0331e38bd017284cc081bcc79e0395fe150554",
+    "filas": 35235
+  },
+  "predicciones_val_sha256": "403ab4aa25379a5e34dfe3416392778ca0556f74c12dc0e31514f76833b6da74",
+  "min_normales_por_grupo": 100,
+  "v1_vs_v2": {
+    "v1": "e1_logreg_base",
+    "v2": "e4_hgb_threshold",
+    "por_attack_cat": [
+      {
+        "attack_cat": "Fuzzers",
+        "tipo_error": "falso_negativo",
+        "filas": 3547,
+        "errores_v1": 177,
+        "errores_v2": 825,
+        "diferencia_v2_menos_v1": 648
+      },
+      {
+        "attack_cat": "Normal",
+        "tipo_error": "falso_positivo",
+        "filas": 10945,
+        "errores_v1": 1864,
+        "errores_v2": 547,
+        "diferencia_v2_menos_v1": -1317
+      },
+      {
+        "attack_cat": "Analysis",
+        "tipo_error": "falso_negativo",
+        "filas": 421,
+        "errores_v1": 0,
+        "errores_v2": 59,
+        "diferencia_v2_menos_v1": 59
+      },
+      {
+        "attack_cat": "Exploits",
+        "tipo_error": "falso_negativo",
+        "filas": 6852,
+        "errores_v1": 54,
+        "errores_v2": 52,
+        "diferencia_v2_menos_v1": -2
+      },
+      {
+        "attack_cat": "Reconnaissance",
+        "tipo_error": "falso_negativo",
+        "filas": 1926,
+        "errores_v1": 7,
+        "errores_v2": 9,
+        "diferencia_v2_menos_v1": 2
+      },
+      {
+        "attack_cat": "DoS",
+        "tipo_error": "falso_negativo",
+        "filas": 2606,
+        "errores_v1": 21,
+        "errores_v2": 9,
+        "diferencia_v2_menos_v1": -12
+      },
+      {
+        "attack_cat": "Shellcode",
+        "tipo_error": "falso_negativo",
+        "filas": 234,
+        "errores_v1": 2,
+        "errores_v2": 4,
+        "diferencia_v2_menos_v1": 2
+      },
+      {
+        "attack_cat": "Generic",
+        "tipo_error": "falso_negativo",
+        "filas": 8315,
+        "errores_v1": 3,
+        "errores_v2": 2,
+        "diferencia_v2_menos_v1": -1
+      },
+      {
+        "attack_cat": "Backdoor",
+        "tipo_error": "falso_negativo",
+        "filas": 372,
+        "errores_v1": 9,
+        "errores_v2": 0,
+        "diferencia_v2_menos_v1": -9
+      },
+      {
+        "attack_cat": "Worms",
+        "tipo_error": "falso_negativo",
+        "filas": 17,
+        "errores_v1": 0,
+        "errores_v2": 0,
+        "diferencia_v2_menos_v1": 0
+      }
+    ]
+  },
+  "experimentos": {
+    "e1_logreg_base": {
+      "run_id": "52c5225915704ba3bbe1c91635ea6846",
+      "model_sha256": "cd0d72260f75535658480f24ab1b3b2a725cae1b64c526b48e690642b4756807",
+      "threshold": 0.5,
+      "matriz_confusion_val": {
+        "tn": 9081,
+        "fp": 1864,
+        "fn": 273,
+        "tp": 24017
+      },
+      "coincide_con_mlflow": true,
+      "falsos_negativos_por_attack_cat": [
+        {
+          "attack_cat": "Fuzzers",
+          "ataques": 3547,
+          "no_detectados": 177,
+          "tasa_no_detectados": 0.0499,
+          "pct_de_fn": 0.6484
+        },
+        {
+          "attack_cat": "Exploits",
+          "ataques": 6852,
+          "no_detectados": 54,
+          "tasa_no_detectados": 0.0079,
+          "pct_de_fn": 0.1978
+        },
+        {
+          "attack_cat": "DoS",
+          "ataques": 2606,
+          "no_detectados": 21,
+          "tasa_no_detectados": 0.0081,
+          "pct_de_fn": 0.0769
+        },
+        {
+          "attack_cat": "Backdoor",
+          "ataques": 372,
+          "no_detectados": 9,
+          "tasa_no_detectados": 0.0242,
+          "pct_de_fn": 0.033
+        },
+        {
+          "attack_cat": "Reconnaissance",
+          "ataques": 1926,
+          "no_detectados": 7,
+          "tasa_no_detectados": 0.0036,
+          "pct_de_fn": 0.0256
+        },
+        {
+          "attack_cat": "Generic",
+          "ataques": 8315,
+          "no_detectados": 3,
+          "tasa_no_detectados": 0.0004,
+          "pct_de_fn": 0.011
+        },
+        {
+          "attack_cat": "Shellcode",
+          "ataques": 234,
+          "no_detectados": 2,
+          "tasa_no_detectados": 0.0085,
+          "pct_de_fn": 0.0073
+        },
+        {
+          "attack_cat": "Analysis",
+          "ataques": 421,
+          "no_detectados": 0,
+          "tasa_no_detectados": 0.0,
+          "pct_de_fn": 0.0
+        },
+        {
+          "attack_cat": "Worms",
+          "ataques": 17,
+          "no_detectados": 0,
+          "tasa_no_detectados": 0.0,
+          "pct_de_fn": 0.0
+        }
+      ],
+      "falsos_positivos_por_service": [
+        {
+          "service": "-",
+          "normales": 7020,
+          "falsos_positivos": 1539,
+          "fpr": 0.2192,
+          "pct_de_fp": 0.8256
+        },
+        {
+          "service": "http",
+          "normales": 1098,
+          "falsos_positivos": 249,
+          "fpr": 0.2268,
+          "pct_de_fp": 0.1336
+        },
+        {
+          "service": "ftp",
+          "normales": 261,
+          "falsos_positivos": 65,
+          "fpr": 0.249,
+          "pct_de_fp": 0.0349
+        },
+        {
+          "service": "dns",
+          "normales": 1543,
+          "falsos_positivos": 7,
+          "fpr": 0.0045,
+          "pct_de_fp": 0.0038
+        },
+        {
+          "service": "smtp",
+          "normales": 298,
+          "falsos_positivos": 2,
+          "fpr": 0.0067,
+          "pct_de_fp": 0.0011
+        }
+      ],
+      "falsos_positivos_por_state": [
+        {
+          "state": "FIN",
+          "normales": 7417,
+          "falsos_positivos": 1548,
+          "fpr": 0.2087,
+          "pct_de_fp": 0.8305
+        },
+        {
+          "state": "INT",
+          "normales": 908,
+          "falsos_positivos": 306,
+          "fpr": 0.337,
+          "pct_de_fp": 0.1642
+        },
+        {
+          "state": "REQ",
+          "normales": 159,
+          "falsos_positivos": 7,
+          "fpr": 0.044,
+          "pct_de_fp": 0.0038
+        },
+        {
+          "state": "CON",
+          "normales": 2445,
+          "falsos_positivos": 3,
+          "fpr": 0.0012,
+          "pct_de_fp": 0.0016
+        }
+      ],
+      "falsos_positivos_por_sttl": [
+        {
+          "sttl": "254",
+          "normales": 2122,
+          "falsos_positivos": 1648,
+          "fpr": 0.7766,
+          "pct_de_fp": 0.8841
+        },
+        {
+          "sttl": "62",
+          "normales": 421,
+          "falsos_positivos": 206,
+          "fpr": 0.4893,
+          "pct_de_fp": 0.1105
+        },
+        {
+          "sttl": "31",
+          "normales": 7930,
+          "falsos_positivos": 2,
+          "fpr": 0.0003,
+          "pct_de_fp": 0.0011
+        },
+        {
+          "sttl": "0",
+          "normales": 448,
+          "falsos_positivos": 0,
+          "fpr": 0.0,
+          "pct_de_fp": 0.0
+        }
+      ]
+    },
+    "e2_logreg_log1p": {
+      "run_id": "2a5fc84c5ec648cf98d4d30673ec30f8",
+      "model_sha256": "3d917d5bf1b3646d1ab991f27e7d8b99cb78037aa204ba1cc908fdb7110a42c7",
+      "threshold": 0.5,
+      "matriz_confusion_val": {
+        "tn": 9487,
+        "fp": 1458,
+        "fn": 549,
+        "tp": 23741
+      },
+      "coincide_con_mlflow": true,
+      "falsos_negativos_por_attack_cat": [
+        {
+          "attack_cat": "Fuzzers",
+          "ataques": 3547,
+          "no_detectados": 467,
+          "tasa_no_detectados": 0.1317,
+          "pct_de_fn": 0.8506
+        },
+        {
+          "attack_cat": "Exploits",
+          "ataques": 6852,
+          "no_detectados": 28,
+          "tasa_no_detectados": 0.0041,
+          "pct_de_fn": 0.051
+        },
+        {
+          "attack_cat": "DoS",
+          "ataques": 2606,
+          "no_detectados": 18,
+          "tasa_no_detectados": 0.0069,
+          "pct_de_fn": 0.0328
+        },
+        {
+          "attack_cat": "Analysis",
+          "ataques": 421,
+          "no_detectados": 16,
+          "tasa_no_detectados": 0.038,
+          "pct_de_fn": 0.0291
+        },
+        {
+          "attack_cat": "Reconnaissance",
+          "ataques": 1926,
+          "no_detectados": 11,
+          "tasa_no_detectados": 0.0057,
+          "pct_de_fn": 0.02
+        },
+        {
+          "attack_cat": "Generic",
+          "ataques": 8315,
+          "no_detectados": 4,
+          "tasa_no_detectados": 0.0005,
+          "pct_de_fn": 0.0073
+        },
+        {
+          "attack_cat": "Backdoor",
+          "ataques": 372,
+          "no_detectados": 3,
+          "tasa_no_detectados": 0.0081,
+          "pct_de_fn": 0.0055
+        },
+        {
+          "attack_cat": "Shellcode",
+          "ataques": 234,
+          "no_detectados": 2,
+          "tasa_no_detectados": 0.0085,
+          "pct_de_fn": 0.0036
+        },
+        {
+          "attack_cat": "Worms",
+          "ataques": 17,
+          "no_detectados": 0,
+          "tasa_no_detectados": 0.0,
+          "pct_de_fn": 0.0
+        }
+      ],
+      "falsos_positivos_por_service": [
+        {
+          "service": "-",
+          "normales": 7020,
+          "falsos_positivos": 1191,
+          "fpr": 0.1697,
+          "pct_de_fp": 0.8169
+        },
+        {
+          "service": "http",
+          "normales": 1098,
+          "falsos_positivos": 205,
+          "fpr": 0.1867,
+          "pct_de_fp": 0.1406
+        },
+        {
+          "service": "ftp",
+          "normales": 261,
+          "falsos_positivos": 55,
+          "fpr": 0.2107,
+          "pct_de_fp": 0.0377
+        },
+        {
+          "service": "dns",
+          "normales": 1543,
+          "falsos_positivos": 2,
+          "fpr": 0.0013,
+          "pct_de_fp": 0.0014
+        },
+        {
+          "service": "smtp",
+          "normales": 298,
+          "falsos_positivos": 2,
+          "fpr": 0.0067,
+          "pct_de_fp": 0.0014
+        }
+      ],
+      "falsos_positivos_por_state": [
+        {
+          "state": "FIN",
+          "normales": 7417,
+          "falsos_positivos": 1176,
+          "fpr": 0.1586,
+          "pct_de_fp": 0.8066
+        },
+        {
+          "state": "INT",
+          "normales": 908,
+          "falsos_positivos": 273,
+          "fpr": 0.3007,
+          "pct_de_fp": 0.1872
+        },
+        {
+          "state": "REQ",
+          "normales": 159,
+          "falsos_positivos": 7,
+          "fpr": 0.044,
+          "pct_de_fp": 0.0048
+        },
+        {
+          "state": "CON",
+          "normales": 2445,
+          "falsos_positivos": 1,
+          "fpr": 0.0004,
+          "pct_de_fp": 0.0007
+        }
+      ],
+      "falsos_positivos_por_sttl": [
+        {
+          "sttl": "254",
+          "normales": 2122,
+          "falsos_positivos": 1293,
+          "fpr": 0.6093,
+          "pct_de_fp": 0.8868
+        },
+        {
+          "sttl": "62",
+          "normales": 421,
+          "falsos_positivos": 162,
+          "fpr": 0.3848,
+          "pct_de_fp": 0.1111
+        },
+        {
+          "sttl": "31",
+          "normales": 7930,
+          "falsos_positivos": 0,
+          "fpr": 0.0,
+          "pct_de_fp": 0.0
+        },
+        {
+          "sttl": "0",
+          "normales": 448,
+          "falsos_positivos": 0,
+          "fpr": 0.0,
+          "pct_de_fp": 0.0
+        }
+      ]
+    },
+    "e3_random_forest": {
+      "run_id": "c536839424c24e958c2df32223c6cfe0",
+      "model_sha256": "39d195b827e59f0e5e93ed97ee3ac13a71347861cecffbfdbaa5e6c2ff1c811f",
+      "threshold": 0.5,
+      "matriz_confusion_val": {
+        "tn": 9888,
+        "fp": 1057,
+        "fn": 469,
+        "tp": 23821
+      },
+      "coincide_con_mlflow": true,
+      "falsos_negativos_por_attack_cat": [
+        {
+          "attack_cat": "Fuzzers",
+          "ataques": 3547,
+          "no_detectados": 402,
+          "tasa_no_detectados": 0.1133,
+          "pct_de_fn": 0.8571
+        },
+        {
+          "attack_cat": "Analysis",
+          "ataques": 421,
+          "no_detectados": 41,
+          "tasa_no_detectados": 0.0974,
+          "pct_de_fn": 0.0874
+        },
+        {
+          "attack_cat": "Exploits",
+          "ataques": 6852,
+          "no_detectados": 18,
+          "tasa_no_detectados": 0.0026,
+          "pct_de_fn": 0.0384
+        },
+        {
+          "attack_cat": "Reconnaissance",
+          "ataques": 1926,
+          "no_detectados": 4,
+          "tasa_no_detectados": 0.0021,
+          "pct_de_fn": 0.0085
+        },
+        {
+          "attack_cat": "DoS",
+          "ataques": 2606,
+          "no_detectados": 2,
+          "tasa_no_detectados": 0.0008,
+          "pct_de_fn": 0.0043
+        },
+        {
+          "attack_cat": "Generic",
+          "ataques": 8315,
+          "no_detectados": 1,
+          "tasa_no_detectados": 0.0001,
+          "pct_de_fn": 0.0021
+        },
+        {
+          "attack_cat": "Shellcode",
+          "ataques": 234,
+          "no_detectados": 1,
+          "tasa_no_detectados": 0.0043,
+          "pct_de_fn": 0.0021
+        },
+        {
+          "attack_cat": "Backdoor",
+          "ataques": 372,
+          "no_detectados": 0,
+          "tasa_no_detectados": 0.0,
+          "pct_de_fn": 0.0
+        },
+        {
+          "attack_cat": "Worms",
+          "ataques": 17,
+          "no_detectados": 0,
+          "tasa_no_detectados": 0.0,
+          "pct_de_fn": 0.0
+        }
+      ],
+      "falsos_positivos_por_service": [
+        {
+          "service": "-",
+          "normales": 7020,
+          "falsos_positivos": 893,
+          "fpr": 0.1272,
+          "pct_de_fp": 0.8448
+        },
+        {
+          "service": "http",
+          "normales": 1098,
+          "falsos_positivos": 116,
+          "fpr": 0.1056,
+          "pct_de_fp": 0.1097
+        },
+        {
+          "service": "ftp",
+          "normales": 261,
+          "falsos_positivos": 41,
+          "fpr": 0.1571,
+          "pct_de_fp": 0.0388
+        },
+        {
+          "service": "dns",
+          "normales": 1543,
+          "falsos_positivos": 3,
+          "fpr": 0.0019,
+          "pct_de_fp": 0.0028
+        },
+        {
+          "service": "smtp",
+          "normales": 298,
+          "falsos_positivos": 2,
+          "fpr": 0.0067,
+          "pct_de_fp": 0.0019
+        }
+      ],
+      "falsos_positivos_por_state": [
+        {
+          "state": "FIN",
+          "normales": 7417,
+          "falsos_positivos": 839,
+          "fpr": 0.1131,
+          "pct_de_fp": 0.7938
+        },
+        {
+          "state": "INT",
+          "normales": 908,
+          "falsos_positivos": 211,
+          "fpr": 0.2324,
+          "pct_de_fp": 0.1996
+        },
+        {
+          "state": "REQ",
+          "normales": 159,
+          "falsos_positivos": 7,
+          "fpr": 0.044,
+          "pct_de_fp": 0.0066
+        },
+        {
+          "state": "CON",
+          "normales": 2445,
+          "falsos_positivos": 0,
+          "fpr": 0.0,
+          "pct_de_fp": 0.0
+        }
+      ],
+      "falsos_positivos_por_sttl": [
+        {
+          "sttl": "254",
+          "normales": 2122,
+          "falsos_positivos": 979,
+          "fpr": 0.4614,
+          "pct_de_fp": 0.9262
+        },
+        {
+          "sttl": "62",
+          "normales": 421,
+          "falsos_positivos": 74,
+          "fpr": 0.1758,
+          "pct_de_fp": 0.07
+        },
+        {
+          "sttl": "31",
+          "normales": 7930,
+          "falsos_positivos": 0,
+          "fpr": 0.0,
+          "pct_de_fp": 0.0
+        },
+        {
+          "sttl": "0",
+          "normales": 448,
+          "falsos_positivos": 0,
+          "fpr": 0.0,
+          "pct_de_fp": 0.0
+        }
+      ]
+    },
+    "e4_hgb_threshold": {
+      "run_id": "c5503f3f886f4309927f98bac0288479",
+      "model_sha256": "689fb002a0eaa577af78ee78cec88043a53e93fc17ae96a4f8aba4c93dda03e9",
+      "threshold": 0.6574,
+      "matriz_confusion_val": {
+        "tn": 10398,
+        "fp": 547,
+        "fn": 960,
+        "tp": 23330
+      },
+      "coincide_con_mlflow": true,
+      "falsos_negativos_por_attack_cat": [
+        {
+          "attack_cat": "Fuzzers",
+          "ataques": 3547,
+          "no_detectados": 825,
+          "tasa_no_detectados": 0.2326,
+          "pct_de_fn": 0.8594
+        },
+        {
+          "attack_cat": "Analysis",
+          "ataques": 421,
+          "no_detectados": 59,
+          "tasa_no_detectados": 0.1401,
+          "pct_de_fn": 0.0615
+        },
+        {
+          "attack_cat": "Exploits",
+          "ataques": 6852,
+          "no_detectados": 52,
+          "tasa_no_detectados": 0.0076,
+          "pct_de_fn": 0.0542
+        },
+        {
+          "attack_cat": "Reconnaissance",
+          "ataques": 1926,
+          "no_detectados": 9,
+          "tasa_no_detectados": 0.0047,
+          "pct_de_fn": 0.0094
+        },
+        {
+          "attack_cat": "DoS",
+          "ataques": 2606,
+          "no_detectados": 9,
+          "tasa_no_detectados": 0.0035,
+          "pct_de_fn": 0.0094
+        },
+        {
+          "attack_cat": "Shellcode",
+          "ataques": 234,
+          "no_detectados": 4,
+          "tasa_no_detectados": 0.0171,
+          "pct_de_fn": 0.0042
+        },
+        {
+          "attack_cat": "Generic",
+          "ataques": 8315,
+          "no_detectados": 2,
+          "tasa_no_detectados": 0.0002,
+          "pct_de_fn": 0.0021
+        },
+        {
+          "attack_cat": "Backdoor",
+          "ataques": 372,
+          "no_detectados": 0,
+          "tasa_no_detectados": 0.0,
+          "pct_de_fn": 0.0
+        },
+        {
+          "attack_cat": "Worms",
+          "ataques": 17,
+          "no_detectados": 0,
+          "tasa_no_detectados": 0.0,
+          "pct_de_fn": 0.0
+        }
+      ],
+      "falsos_positivos_por_service": [
+        {
+          "service": "-",
+          "normales": 7020,
+          "falsos_positivos": 452,
+          "fpr": 0.0644,
+          "pct_de_fp": 0.8263
+        },
+        {
+          "service": "http",
+          "normales": 1098,
+          "falsos_positivos": 69,
+          "fpr": 0.0628,
+          "pct_de_fp": 0.1261
+        },
+        {
+          "service": "ftp",
+          "normales": 261,
+          "falsos_positivos": 22,
+          "fpr": 0.0843,
+          "pct_de_fp": 0.0402
+        },
+        {
+          "service": "smtp",
+          "normales": 298,
+          "falsos_positivos": 2,
+          "fpr": 0.0067,
+          "pct_de_fp": 0.0037
+        },
+        {
+          "service": "ftp-data",
+          "normales": 482,
+          "falsos_positivos": 1,
+          "fpr": 0.0021,
+          "pct_de_fp": 0.0018
+        }
+      ],
+      "falsos_positivos_por_state": [
+        {
+          "state": "FIN",
+          "normales": 7417,
+          "falsos_positivos": 427,
+          "fpr": 0.0576,
+          "pct_de_fp": 0.7806
+        },
+        {
+          "state": "INT",
+          "normales": 908,
+          "falsos_positivos": 113,
+          "fpr": 0.1244,
+          "pct_de_fp": 0.2066
+        },
+        {
+          "state": "REQ",
+          "normales": 159,
+          "falsos_positivos": 7,
+          "fpr": 0.044,
+          "pct_de_fp": 0.0128
+        },
+        {
+          "state": "CON",
+          "normales": 2445,
+          "falsos_positivos": 0,
+          "fpr": 0.0,
+          "pct_de_fp": 0.0
+        }
+      ],
+      "falsos_positivos_por_sttl": [
+        {
+          "sttl": "254",
+          "normales": 2122,
+          "falsos_positivos": 506,
+          "fpr": 0.2385,
+          "pct_de_fp": 0.925
+        },
+        {
+          "sttl": "62",
+          "normales": 421,
+          "falsos_positivos": 40,
+          "fpr": 0.095,
+          "pct_de_fp": 0.0731
+        },
+        {
+          "sttl": "31",
+          "normales": 7930,
+          "falsos_positivos": 0,
+          "fpr": 0.0,
+          "pct_de_fp": 0.0
+        },
+        {
+          "sttl": "0",
+          "normales": 448,
+          "falsos_positivos": 0,
+          "fpr": 0.0,
+          "pct_de_fp": 0.0
+        }
+      ]
+    }
+  }
+}

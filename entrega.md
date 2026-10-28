@@ -35,7 +35,8 @@ macro-F1 (0,926 → 0,951); empeora recall de ataque (0,989 → 0,960). Ver info
 ## Ubicación de las evidencias
 - Auditoría de datos y particiones: `evidencias/auditoria.json`
 - Tabla de experimentos: `evidencias/experimentos.csv`
-- Exportación de MLflow (4 runs): `evidencias/mlflow/` (cruce por `run_id`; ver `COMO_CONSULTAR.md`)
+- Exportación de MLflow (4 runs): `evidencias/mlflow/` (cruce por `run_id`; `runs/<run_id>/artifacts.json` lista cada artefacto con su SHA-256 y `artifacts/` copia los de hasta 5 MB, incluidos los modelos de E1, E2 y E4; ver `COMO_CONSULTAR.md`)
+- Interpretación de errores en validación (4 configuraciones, por `attack_cat` y falsos positivos por `service`/`state`/`sttl`; posterior, no usado para decidir): `evidencias/errores-validacion.csv`, `evidencias/errores-validacion.json`, predicciones de validación por fila en `evidencias/predicciones-val.csv`
 - Selección congelada antes del test: `evidencias/seleccion.json` (commit `269c2ab085012903f1e79b69ffebd137404c005c`, anterior al commit de `metricas-test.json`, `d71d7f66addf2349281c0217b48e99f0bbbe0590`)
 - Versiones publicadas: `evidencias/hf_versions.json`
 - Métricas de test: `evidencias/metricas-test.json`

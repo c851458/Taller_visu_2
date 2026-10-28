@@ -58,6 +58,14 @@ Configuraciones: `configs/experiments/e1_logreg_base.yaml`, `e2_logreg_log1p.yam
 `e3_random_forest.yaml`, `e4_hgb_threshold.yaml`. Cada una tiene hipótesis, cambio, parámetros y
 política de umbral (elegido solo con validación).
 
+Interpretación de errores en validación de las cuatro configuraciones (por `attack_cat`, y falsos
+positivos por `service`, `state` y `sttl`). Comprueba el hash de cada modelo y que su matriz de
+confusión coincide con la registrada en MLflow; no cambia modelos, umbrales ni la selección:
+
+```bash
+python -m src.analyze_val_errors     # evidencias/errores-validacion.{csv,json} y predicciones-val.csv
+```
+
 ## Descargar cada modelo y predecir
 
 Los SHAs completos están en `evidencias/hf_versions.json` y en `entrega.md`.
@@ -100,11 +108,13 @@ bash scripts/empaquetar.sh entrega   # dist/proyecto-<commit>.zip con git archiv
 
 ```
 src/            código (download_data, prepare, train, export_mlflow, publish_hf,
-                select_model, evaluate_test, recompute_metrics, recovery, predict)
+                select_model, evaluate_test, recompute_metrics, recovery, predict,
+                analyze_val_errors, analyze_fp_test)
 configs/        parámetros, 4 experimentos, regla de selección, conclusiones
 scripts/        prueba_recuperacion.sh, empaquetar.sh, generar_informe.py
 dvc.yaml/.lock  etapa prepare (datos preparados)
 data/raw.dvc    datos originales
 evidencias/     auditoria.json, experimentos.csv, seleccion.json, metricas-test.json,
-                predicciones-test.csv, hf_versions.json, mlflow/, recuperacion/
+                predicciones-test.csv, hf_versions.json, mlflow/, recuperacion/,
+                errores-validacion.{csv,json}, predicciones-val.csv, analisis-fp-test.json
 ```
