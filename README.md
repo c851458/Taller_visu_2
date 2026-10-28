@@ -18,7 +18,7 @@ El índice de la entrega (identificadores, SHAs, ubicación de evidencias) está
 ## Instalación
 
 ```bash
-git clone <URL_GITHUB> defiende-servidor && cd defiende-servidor
+git clone https://github.com/c851458/Taller_visu_2.git defiende-servidor && cd defiende-servidor
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
@@ -63,9 +63,9 @@ política de umbral (elegido solo con validación).
 Los SHAs completos están en `evidencias/hf_versions.json` y en `entrega.md`.
 
 ```bash
-python src/predict.py --repo-id <USUARIO_HF>/defiende-servidor-unsw --revision <SHA_V1> \
+python src/predict.py --repo-id c851458/defiende-servidor-unsw --revision ca61db0e29f5c1816f68790f44d6af65a23ab082 \
   --input evidencias/recuperacion/entrada.csv --output salida_v1.csv
-python src/predict.py --repo-id <USUARIO_HF>/defiende-servidor-unsw --revision <SHA_V2> \
+python src/predict.py --repo-id c851458/defiende-servidor-unsw --revision 9fb15e97dc936b6ba90bbdc73a8de92781462f75 \
   --input evidencias/recuperacion/entrada.csv --output salida_v2.csv
 ```
 
@@ -75,7 +75,7 @@ Salida: `row_id, score_attack, y_pred`, con la regla `y_pred = 1 si score_attack
 
 ```bash
 DAGSHUB_USER=<TU_USUARIO_DAGSHUB> DAGSHUB_TOKEN=<TU_TOKEN_DAGSHUB> \
-  bash scripts/prueba_recuperacion.sh <URL_GITHUB> <COMMIT_COMPLETO>
+  bash scripts/prueba_recuperacion.sh https://github.com/c851458/Taller_visu_2.git "$(git rev-parse HEAD)"
 ```
 
 Clona en una carpeta nueva, crea un entorno nuevo, configura tus credenciales DagsHub solo en el
