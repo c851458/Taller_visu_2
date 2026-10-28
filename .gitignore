@@ -1,0 +1,16 @@
+# Entornos y cachés
+.venv*/
+__pycache__/
+*.pyc
+# Datos: los versiona DVC (data/raw.dvc y dvc.lock)
+/data/raw
+/data/prepared
+# Artefactos locales: modelos en Hugging Face, runs exportados en evidencias/mlflow
+/models/
+/hf_release/
+mlflow.db
+/mlruns/
+/mlartifacts/
+# Credenciales: nunca a Git
+.env
+.dvc/config.local

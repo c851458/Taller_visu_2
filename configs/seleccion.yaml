@@ -1,0 +1,8 @@
+# Regla de selección de v2 (solo validación). Se fija antes de mirar el test.
+max_fpr: 0.05
+criterion: "mayor macro-F1 de validación entre los experimentos con FPR <= max_fpr"
+reason: >
+  Para el equipo de seguridad las falsas alarmas tienen un costo operativo alto
+  (fatiga de alertas). Se fija un tope de 5 % de FPR y, dentro de él, se busca
+  el mejor equilibrio entre clases (macro-F1). Se acepta perder algo de recall
+  de ataque frente a v1 a cambio de reducir las falsas alarmas a menos de un tercio.

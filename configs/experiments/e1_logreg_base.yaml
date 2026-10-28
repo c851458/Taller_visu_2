@@ -1,0 +1,18 @@
+id: e1_logreg_base
+family: lineal
+hypothesis: >
+  Referencia sencilla. Una regresión logística con one-hot y escalado estándar
+  separa buena parte del tráfico normal/ataque con umbral 0.5.
+change: "Línea base (sin cambios previos)."
+preprocessing:
+  scale: true
+  log1p: false
+  min_frequency: 20
+model:
+  estimator: logistic_regression
+  params:
+    C: 1.0
+    max_iter: 2000
+threshold_policy:
+  type: fixed
+  value: 0.5

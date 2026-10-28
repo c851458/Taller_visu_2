@@ -1,0 +1,28 @@
+# Parámetros globales: datos, particiones y rutas.
+seed: 2026
+val_fraction: 0.20
+
+data:
+  raw_dir: data/raw
+  prepared_dir: data/prepared
+  sources:
+    train:
+      file: UNSW_NB15_training-set.csv
+      official_page: https://research.unsw.edu.au/projects/unsw-nb15-dataset
+      mirror_url: https://raw.githubusercontent.com/Nir-J/ML-Projects/master/UNSW-Network_Packet_Classification/UNSW_NB15_training-set.csv
+      expected_sha256: bec7dd5ec88dc2a0ccc7a07879d338395ed7421750f675fd0339e07dfe0648fa
+      expected_rows: 175341
+    test:
+      file: UNSW_NB15_testing-set.csv
+      official_page: https://research.unsw.edu.au/projects/unsw-nb15-dataset
+      mirror_url: https://raw.githubusercontent.com/Nir-J/ML-Projects/master/UNSW-Network_Packet_Classification/UNSW_NB15_testing-set.csv
+      expected_sha256: 734fe6642edf758f7c94d7d9149426b49d202fe8e7bf0bef47392489c3c0a559
+      expected_rows: 82332
+
+target: label            # 0 = normal, 1 = ataque (clase positiva)
+excluded_columns: [id, attack_cat, label]
+categorical_columns: [proto, service, state]
+
+mlflow:
+  tracking_uri: sqlite:///mlflow.db
+  experiment_name: defiende-el-servidor

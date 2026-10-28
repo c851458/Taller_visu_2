@@ -1,0 +1,17 @@
+stages:
+  prepare:
+    cmd: python -m src.prepare
+    deps:
+      - data/raw
+      - src/prepare.py
+      - src/common.py
+    params:
+      - configs/params.yaml:
+          - seed
+          - val_fraction
+          - excluded_columns
+          - categorical_columns
+    outs:
+      - data/prepared
+      - evidencias/auditoria.json:
+          cache: false

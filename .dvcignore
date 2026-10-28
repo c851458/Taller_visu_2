@@ -1,0 +1,3 @@
+# Archivos que DVC no debe seguir
+*.tmp
+__pycache__/
