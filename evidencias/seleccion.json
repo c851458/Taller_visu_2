@@ -1,0 +1,29 @@
+{
+  "version": "v2",
+  "experiment_id": "e4_hgb_threshold",
+  "mlflow_run_id": "c5503f3f886f4309927f98bac0288479",
+  "git_commit_model": "057957069ef92fba2a9ebef2c8b70f61fd405c48",
+  "git_commit_at_selection": "2427e2a9e3f51b97f8fe127799d18bc387c1862e",
+  "dvc_prepared_md5": "5832cbec6fbaff34eaf128c733c18932.dir",
+  "dvc_raw_md5": "688fd73cceff08e318906ecd85de60c4.dir",
+  "hf_repo_id": "c851458/defiende-servidor-unsw",
+  "hf_revision": "9fb15e97dc936b6ba90bbdc73a8de92781462f75",
+  "model_sha256": "689fb002a0eaa577af78ee78cec88043a53e93fc17ae96a4f8aba4c93dda03e9",
+  "threshold": 0.6574,
+  "selection_rule": {
+    "max_fpr": 0.05,
+    "criterion": "mayor macro-F1 de validación entre los experimentos con FPR <= max_fpr",
+    "reason": "Para el equipo de seguridad las falsas alarmas tienen un costo operativo alto (fatiga de alertas). Se fija un tope de 5 % de FPR y, dentro de él, se busca el mejor equilibrio entre clases (macro-F1). Se acepta perder algo de recall de ataque frente a v1 a cambio de reducir las falsas alarmas a menos de un tercio.\n"
+  },
+  "reason": "Para el equipo de seguridad las falsas alarmas tienen un costo operativo alto (fatiga de alertas). Se fija un tope de 5 % de FPR y, dentro de él, se busca el mejor equilibrio entre clases (macro-F1). Se acepta perder algo de recall de ataque frente a v1 a cambio de reducir las falsas alarmas a menos de un tercio.",
+  "validation_metrics": {
+    "val_recall_attack": 0.9604775627830384,
+    "val_precision_attack": 0.9770909243204756,
+    "val_fpr": 0.049977158519872,
+    "val_macro_f1": 0.9505718170012863
+  },
+  "compared_against": "v1 = e1_logreg_base (solo validación)",
+  "test_used_for_selection": false,
+  "frozen_at_utc": "2026-10-28T14:38:24+00:00",
+  "freeze_evidence": "commit de Git que añade este archivo, anterior al commit de metricas-test.json"
+}
