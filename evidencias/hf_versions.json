@@ -14,5 +14,21 @@
     "model_sha256": "cd0d72260f75535658480f24ab1b3b2a725cae1b64c526b48e690642b4756807",
     "threshold": 0.5,
     "mlflow_tracking_uri": "sqlite:///mlflow.db"
+  },
+  "v2": {
+    "repo_id": "c851458/defiende-servidor-unsw",
+    "revision": "9fb15e97dc936b6ba90bbdc73a8de92781462f75",
+    "tag": "v2",
+    "experiment_id": "e4_hgb_threshold",
+    "mlflow_run_id": "c5503f3f886f4309927f98bac0288479",
+    "git_commit_model": "057957069ef92fba2a9ebef2c8b70f61fd405c48",
+    "git_commit_publish": "0925a7445b248b425d23bca42c97acdbe1501c14",
+    "dvc": {
+      "raw_md5": "688fd73cceff08e318906ecd85de60c4.dir",
+      "prepared_md5": "5832cbec6fbaff34eaf128c733c18932.dir"
+    },
+    "model_sha256": "689fb002a0eaa577af78ee78cec88043a53e93fc17ae96a4f8aba4c93dda03e9",
+    "threshold": 0.6574,
+    "mlflow_tracking_uri": "sqlite:///mlflow.db"
   }
 }
