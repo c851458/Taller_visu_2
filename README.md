@@ -26,9 +26,15 @@ pip install -r requirements.txt
 
 ## Recuperar los datos (DVC)
 
-El remote DVC está configurado en `.dvc/config` (DagsHub, lectura pública).
+El remote DVC está configurado en `.dvc/config`: https://dagshub.com/c851458/Taller_visu_2 (repositorio
+público). DagsHub exige iniciar sesión para leer el almacenamiento DVC aunque el repositorio sea público,
+así que cada persona usa **su propia** cuenta gratuita de DagsHub (*Settings → Tokens* para copiar el token).
+Las credenciales quedan en `.dvc/config.local`, que Git ignora; no se comparten tokens.
 
 ```bash
+dvc remote modify origin --local auth basic
+dvc remote modify origin --local user <TU_USUARIO_DAGSHUB>
+dvc remote modify origin --local password <TU_TOKEN_DAGSHUB>
 dvc pull                      # data/raw (originales) y data/prepared (particiones)
 python -m src.recovery verify-data   # comprueba SHA-256 contra configs/params.yaml y evidencias/auditoria.json
 ```
@@ -68,10 +74,12 @@ Salida: `row_id, score_attack, y_pred`, con la regla `y_pred = 1 si score_attack
 ## Prueba de recuperación en entorno nuevo
 
 ```bash
-bash scripts/prueba_recuperacion.sh <URL_GITHUB> <COMMIT_COMPLETO>
+DAGSHUB_USER=<TU_USUARIO_DAGSHUB> DAGSHUB_TOKEN=<TU_TOKEN_DAGSHUB> \
+  bash scripts/prueba_recuperacion.sh <URL_GITHUB> <COMMIT_COMPLETO>
 ```
 
-Clona en una carpeta nueva, crea un entorno nuevo, hace `dvc pull` con caché vacía, verifica huellas,
+Clona en una carpeta nueva, crea un entorno nuevo, configura tus credenciales DagsHub solo en el
+`.dvc/config.local` del clon, hace `dvc pull` con caché vacía, verifica huellas,
 descarga v1 y v2 por SHA con una caché de Hugging Face vacía y compara con las salidas guardadas
 (tolerancia absoluta 1e-9 en `score_attack`).
 

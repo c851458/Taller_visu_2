@@ -8,7 +8,10 @@
 - Repositorio de código (GitHub): `<https://github.com/USUARIO/defiende-servidor>`
 - Commit final de la entrega: `<SHA completo de 40 caracteres>`
 - Repositorio de modelos (Hugging Face): `<https://huggingface.co/USUARIO_HF/defiende-servidor-unsw>`
-- Almacenamiento DVC: `<https://dagshub.com/USUARIO/defiende-servidor.dvc>` (configurado en `.dvc/config`; lectura pública, `dvc pull` sin credenciales)
+- Almacenamiento DVC: `https://dagshub.com/c851458/Taller_visu_2.dvc` (configurado en `.dvc/config`; repositorio público).
+  DagsHub exige iniciar sesión para leer DVC aunque el repo sea público: el revisor usa **su propia** cuenta
+  gratuita de DagsHub y su token (`dvc remote modify origin --local auth basic`, `... user <usuario>`,
+  `... password <token>`; ver README). No se comparten tokens.
 
 ## Versiones
 
@@ -44,7 +47,7 @@ python3 -m venv .venv && source .venv/bin/activate && pip install -r requirement
 dvc pull && python -m src.recovery verify-data
 python -m src.train configs/experiments/e1_logreg_base.yaml
 python src/predict.py --repo-id <USUARIO_HF>/defiende-servidor-unsw --revision <SHA_V2> --input evidencias/recuperacion/entrada.csv --output salida.csv
-bash scripts/prueba_recuperacion.sh <URL_GITHUB> <COMMIT>
+DAGSHUB_USER=<usuario> DAGSHUB_TOKEN=<token> bash scripts/prueba_recuperacion.sh <URL_GITHUB> <COMMIT>
 ```
 
 ## Tiempo y recursos (Intel i5-10300H, 8 hilos, 8 GB RAM, WSL2, sin GPU)

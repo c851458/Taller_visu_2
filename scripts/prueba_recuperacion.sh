@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Prueba de recuperación en carpeta y entorno NUEVOS (sin cachés de la ejecución original).
-# Uso: bash scripts/prueba_recuperacion.sh <URL_GITHUB> <COMMIT_COMPLETO>
+# Uso: DAGSHUB_USER=<usuario> DAGSHUB_TOKEN=<token> bash scripts/prueba_recuperacion.sh <URL_GITHUB> <COMMIT_COMPLETO>
 # Deja el log y las salidas en <carpeta_nueva>/proyecto/evidencias/recuperacion/.
 set -euo pipefail
 
@@ -27,6 +27,16 @@ PY=.venv-recuperacion/bin/python
 
 echo "== 2. Datos: dvc pull desde el remote entregado (caché nueva)"
 .venv-recuperacion/bin/dvc remote list
+# DagsHub exige iniciar sesión para leer el almacenamiento DVC, aunque el repo sea público.
+# Cada persona usa SU usuario y token; quedan solo en .dvc/config.local del clon (ignorado por Git).
+if [[ -n "${DAGSHUB_USER:-}" && -n "${DAGSHUB_TOKEN:-}" ]]; then
+  .venv-recuperacion/bin/dvc remote modify origin --local auth basic
+  .venv-recuperacion/bin/dvc remote modify origin --local user "$DAGSHUB_USER"
+  .venv-recuperacion/bin/dvc remote modify origin --local password "$DAGSHUB_TOKEN"
+  echo "credenciales DagsHub de $DAGSHUB_USER en .dvc/config.local (token no se muestra)"
+else
+  echo "AVISO: sin DAGSHUB_USER/DAGSHUB_TOKEN; DagsHub rechazará la lectura anónima"
+fi
 .venv-recuperacion/bin/dvc pull
 .venv-recuperacion/bin/dvc status
 $PY -m src.recovery verify-data
