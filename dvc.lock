@@ -1,0 +1,40 @@
+schema: '2.0'
+stages:
+  prepare:
+    cmd: python -m src.prepare
+    deps:
+    - path: data/raw
+      hash: md5
+      md5: 688fd73cceff08e318906ecd85de60c4.dir
+      size: 47674652
+      nfiles: 3
+    - path: src/common.py
+      hash: md5
+      md5: 399a5d63483cddd549dcef2b99a98dfa
+      size: 1996
+    - path: src/prepare.py
+      hash: md5
+      md5: 82a5315ce5dfb46f4cec4204f8d50f70
+      size: 8274
+    params:
+      configs/params.yaml:
+        categorical_columns:
+        - proto
+        - service
+        - state
+        excluded_columns:
+        - id
+        - attack_cat
+        - label
+        seed: 2026
+        val_fraction: 0.2
+    outs:
+    - path: data/prepared
+      hash: md5
+      md5: 5832cbec6fbaff34eaf128c733c18932.dir
+      size: 62638602
+      nfiles: 4
+    - path: evidencias/auditoria.json
+      hash: md5
+      md5: b68a7246e3d4f2c324e308b325ce5314
+      size: 7379
