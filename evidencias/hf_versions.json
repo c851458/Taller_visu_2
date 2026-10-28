@@ -1,0 +1,18 @@
+{
+  "v1": {
+    "repo_id": "c851458/defiende-servidor-unsw",
+    "revision": "ca61db0e29f5c1816f68790f44d6af65a23ab082",
+    "tag": "v1",
+    "experiment_id": "e1_logreg_base",
+    "mlflow_run_id": "52c5225915704ba3bbe1c91635ea6846",
+    "git_commit_model": "bec239b75d48d6df9311545c4456c78339f4344e",
+    "git_commit_publish": "bec239b75d48d6df9311545c4456c78339f4344e",
+    "dvc": {
+      "raw_md5": "688fd73cceff08e318906ecd85de60c4.dir",
+      "prepared_md5": "5832cbec6fbaff34eaf128c733c18932.dir"
+    },
+    "model_sha256": "cd0d72260f75535658480f24ab1b3b2a725cae1b64c526b48e690642b4756807",
+    "threshold": 0.5,
+    "mlflow_tracking_uri": "sqlite:///mlflow.db"
+  }
+}
