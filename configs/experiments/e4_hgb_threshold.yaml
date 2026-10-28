@@ -1,0 +1,21 @@
+id: e4_hgb_threshold
+family: arboles
+hypothesis: >
+  Gradient boosting sobre histogramas aprende fronteras similares al bosque, y
+  elegir el umbral en validación (máximo recall con FPR <= 5 %) controla
+  explícitamente la tasa de falsas alarmas que el equipo de seguridad tolera.
+change: "Respecto a E3: boosting en lugar de bagging y umbral elegido en validación."
+preprocessing:
+  scale: false
+  log1p: false
+  min_frequency: 20
+model:
+  estimator: hist_gradient_boosting
+  params:
+    max_iter: 300
+    learning_rate: 0.1
+    max_leaf_nodes: 63
+    early_stopping: false
+threshold_policy:
+  type: max_recall_at_fpr
+  max_fpr: 0.05
