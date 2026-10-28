@@ -30,7 +30,8 @@ Revisión posterior de la model card de v2 (solo `README.md`, mismo `model.jobli
 
 Cambio v1 → v2: familia (regresión logística → gradient boosting de árboles) y umbral elegido en
 validación con FPR ≤ 5 %. En validación mejora precision (0,928 → 0,977), FPR (0,170 → 0,050) y
-macro-F1 (0,926 → 0,951); empeora recall de ataque (0,989 → 0,960). Ver informe.
+macro-F1 (0,926 → 0,951); empeora recall de ataque (0,989 → 0,960). El error aceptado son sobre todo
+Fuzzers no detectados (177 → 825 de 3.547; `evidencias/errores-validacion.csv`). Ver informe.
 
 ## Ubicación de las evidencias
 - Auditoría de datos y particiones: `evidencias/auditoria.json`
@@ -69,6 +70,7 @@ bash scripts/empaquetar.sh entrega   # ZIP de la entrega desde el commit final
 - En test la FPR de v2 sube de 0,050 (validación) a 0,192: el tráfico normal del archivo de test es
   distinto (40,7 % de normales con `sttl=254` frente a 19,5 % en el archivo de entrenamiento) y ahí se
   concentra el 88 % de las falsas alarmas (`evidencias/analisis-fp-test.json`).
+- v2 deja pasar el 23 % de los Fuzzers en validación (86 % de sus ataques no detectados).
 - ~10 % de las filas de test tienen entradas idénticas a filas de train/val (ver `auditoria.json`).
 - El umbral de v2 se eligió y se reporta sobre la misma validación (estimación algo optimista).
 - `model.joblib` es pickle: requiere la misma versión de scikit-learn y una fuente confiable.

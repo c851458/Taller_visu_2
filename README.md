@@ -7,7 +7,35 @@ con trazabilidad completa:
 Código: commit Git → Datos: referencia DVC → Experimento: run ID de MLflow → Modelo: revisión (SHA) de Hugging Face
 ```
 
-El índice de la entrega (identificadores, SHAs, ubicación de evidencias) está en [entrega.md](entrega.md).
+El índice de la entrega (identificadores, SHAs, ubicación de evidencias) está en [entrega.md](entrega.md)
+y el informe en [informe.pdf](informe.pdf).
+
+## Resultados
+
+Validación (ataque = clase positiva; `y_pred = 1 si score_attack >= umbral`). Fuente:
+`evidencias/experimentos.csv`.
+
+| Experimento | Familia | Umbral | Recall | Precision | FPR | Macro-F1 | FP | FN | Run ID de MLflow |
+|---|---|---|---|---|---|---|---|---|---|
+| e1_logreg_base (**v1**) | lineal | 0.5000 | 0.989 | 0.928 | 0.170 | 0.926 | 1864 | 273 | `52c5225915704ba3bbe1c91635ea6846` |
+| e2_logreg_log1p | lineal | 0.5000 | 0.977 | 0.942 | 0.133 | 0.932 | 1458 | 549 | `2a5fc84c5ec648cf98d4d30673ec30f8` |
+| e3_random_forest | árboles | 0.5000 | 0.981 | 0.958 | 0.097 | 0.949 | 1057 | 469 | `c536839424c24e958c2df32223c6cfe0` |
+| e4_hgb_threshold (**v2**) | árboles | 0.6574 | 0.960 | 0.977 | 0.050 | 0.951 | 547 | 960 | `c5503f3f886f4309927f98bac0288479` |
+
+v2 (elegida solo con validación y congelada en `evidencias/seleccion.json` antes del test) evaluada una
+vez sobre las 82.332 filas de test (`evidencias/metricas-test.json`):
+
+| Métrica | Validación | Test |
+|---|---|---|
+| Recall de ataque | 0.960 | 0.968 |
+| Precision de ataque | 0.977 | 0.861 |
+| FPR | 0.050 | 0.192 |
+| Macro-F1 | 0.951 | 0.893 |
+
+La FPR sube en test porque el tráfico normal del archivo de test es distinto: el 40,7 % tiene `sttl=254`
+(19,4 % en validación), y ahí se concentra el 88 % de las falsas alarmas (`evidencias/analisis-fp-test.json`).
+En validación, v2 reduce las falsas alarmas frente a v1 (1864 → 547), a cambio de dejar pasar más
+Fuzzers (177 → 825 no detectados; `evidencias/errores-validacion.csv`).
 
 ## Requisitos
 

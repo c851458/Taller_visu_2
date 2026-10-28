@@ -101,6 +101,8 @@ def build() -> None:
     mt = load("metricas-test.json")
     fp = load("analisis-fp-test.json")
     rec = load("recuperacion/comparacion.json")
+    err = load("errores-validacion.json")
+    errt = pd.read_csv(EV / "errores-validacion.csv")
     exp = pd.read_csv(EV / "experimentos.csv").set_index("id")
 
     tr, te = aud["files"]["train"], aud["files"]["test"]
@@ -182,7 +184,8 @@ def build() -> None:
         "Cada configuración (<i>configs/experiments/*.yaml</i>) declara su hipótesis, el cambio respecto a la "
         "anterior y la política de umbral. Cada run de MLflow registra parámetros, semilla (2026), commit, md5 "
         "DVC, métricas de validación, matriz de confusión y el modelo completo (preprocesamiento + estimador). "
-        "La exportación está en <i>evidencias/mlflow/</i> y la tabla en <i>experimentos.csv</i>. "
+        "La exportación está en <i>evidencias/mlflow/</i> (parámetros, métricas, tags y un manifiesto con el "
+        "SHA-256 de cada artefacto; los modelos de E1, E2 y E4 van copiados) y la tabla en <i>experimentos.csv</i>. "
         "<b>Denominadores cero:</b> si un cociente es indefinido (p. ej., precision sin positivos predichos) se "
         "reporta 0,0 y la métrica se lista en <i>undefined_metrics</i>; en estos runs no ocurrió.", P))
     names = {"e1_logreg_base": "E1 · LogReg base", "e2_logreg_log1p": "E2 · LogReg + log1p",
@@ -208,6 +211,41 @@ def build() -> None:
         f"({num(0.953025)}) pero una FPR de {num(0.080311)}: el umbral cambia la proporción entre los dos "
         "tipos de error, no la calidad del ranking. Validación: "
         f"{miles(sp['class_counts']['val']['0'])} normales y {miles(sp['class_counts']['val']['1'])} ataques.", P))
+
+    # Errores por categoría (análisis posterior en validación: src/analyze_val_errors.py)
+    ids = list(names)
+    piv = errt.pivot(index="attack_cat", columns="id", values="errores")
+    rate = errt.pivot(index="attack_cat", columns="id", values="tasa_error")
+    filas = errt.drop_duplicates("attack_cat").set_index("attack_cat")["filas"]
+    cat_rows = ["Normal", "Fuzzers", "Analysis", "Exploits", "DoS", "Reconnaissance", "Backdoor"]
+    rest = [c for c in piv.index if c not in cat_rows]
+    erows = [["Categoría (attack_cat)", "Filas val"] + [names[k].split(" · ")[0] for k in ids]]
+    for c in cat_rows:
+        label = "Normal (falsos positivos)" if c == "Normal" else f"{c} (no detectados)"
+        erows.append([label, miles(filas[c])] + [f"{miles(piv.at[c, k])} ({pct(rate.at[c, k])})" for k in ids])
+    erows.append([" + ".join(rest) + " (no detectados)", miles(filas[rest].sum())]
+                 + [miles(piv.loc[rest, k].sum()) for k in ids])
+    s.append(Spacer(1, 2))
+    s.append(KeepTogether([table(erows, [4.6, 1.6, 2.9, 2.9, 2.9, 2.9])]))
+    s.append(Spacer(1, 4))
+    ev1, ev4 = err["experimentos"]["e1_logreg_base"], err["experimentos"]["e4_hgb_threshold"]
+    fn4 = {r["attack_cat"]: r for r in ev4["falsos_negativos_por_attack_cat"]}
+    fn1 = {r["attack_cat"]: r for r in ev1["falsos_negativos_por_attack_cat"]}
+    st4 = {r["sttl"]: r for r in ev4["falsos_positivos_por_sttl"]}
+    st1 = {r["sttl"]: r for r in ev1["falsos_positivos_por_sttl"]}
+    s.append(Paragraph(
+        "<b>Errores por categoría.</b> <i>src/analyze_val_errors.py</i> recarga cada modelo (hash verificado), "
+        "predice validación, comprueba que las cuatro matrices de confusión coinciden con MLflow y desglosa los "
+        "errores por <i>attack_cat</i>. <i>attack_cat</i> no es entrada del modelo: aquí solo sirve para explicar "
+        "los errores (<i>errores-validacion.csv/.json</i>). El análisis es posterior a la selección y no cambió "
+        f"modelo ni umbral. <b>Fuzzers</b> concentra los ataques no detectados en todas las configuraciones: "
+        f"{pct(fn1['Fuzzers']['pct_de_fn'], 0)} de los de E1 y {pct(fn4['Fuzzers']['pct_de_fn'], 0)} de los de E4. "
+        "Son ataques que envían datos generados al azar, y el modelo los confunde con tráfico normal. "
+        "<b>Analysis</b> también empeora "
+        f"con los árboles (0 → {miles(fn4['Analysis']['no_detectados'])} de {miles(fn4['Analysis']['ataques'])}). "
+        "Generic, DoS, Exploits y Reconnaissance se detectan en más del 99 % con cualquier modelo. Las falsas "
+        f"alarmas se concentran en conexiones normales con <i>sttl</i> = 254: {pct(st1['254']['pct_de_fp'], 0)} de las "
+        f"FP de E1 y {pct(st4['254']['pct_de_fp'], 0)} de las de E4.", P))
 
     # 3. v1 vs v2
     s.append(Paragraph("3. Versiones v1 y v2", H1))
@@ -235,9 +273,11 @@ def build() -> None:
         "<b>Qué cambia y por qué.</b> v2 cambia la familia del modelo y la regla del umbral. Mejora la "
         f"precision y el macro-F1 y reduce las falsas alarmas de {miles(e1['val_fp'])} a {miles(e4['val_fp'])} "
         "(menos de un tercio). <b>Empeora el recall de ataque</b> (0,989 → 0,960): los ataques no detectados "
-        f"pasan de {miles(e1['val_fn'])} a {miles(e4['val_fn'])}. Ese es el error que se acepta, porque para un "
-        "equipo de seguridad el exceso de alertas provoca fatiga y hace que se ignoren también las alertas "
-        "reales. v2 es un artefacto distinto (otro hash y otra revisión), no un renombre de v1. Cada revisión "
+        f"pasan de {miles(e1['val_fn'])} a {miles(e4['val_fn'])}, y casi todo el aumento son Fuzzers "
+        f"({miles(fn1['Fuzzers']['no_detectados'])} → {miles(fn4['Fuzzers']['no_detectados'])}). Ese es el error "
+        "que se acepta, porque para un equipo de seguridad el exceso de alertas provoca fatiga y hace que se "
+        "ignoren también las alertas reales. Exploits, DoS, Backdoor y Shellcode siguen detectándose en "
+        "≥ 98 %. v2 es un artefacto distinto (otro hash y otra revisión), no un renombre de v1. Cada revisión "
         "de Hugging Face contiene el modelo completo, <i>config.json</i> con el umbral, <i>requirements.txt</i>, "
         "<i>predict.py</i> y una model card con propósito, datos, métricas, limitaciones, uso y las referencias "
         "a Git, DVC y MLflow.", P))
@@ -306,9 +346,10 @@ def build() -> None:
         "con sttl = 31 o servicio dns no generan falsas alarmas. El solapamiento no explica el problema: la FPR "
         f"es parecida en las filas de test ya vistas en train/val ({num(ovl['True']['fpr_test'])}) y en las no "
         f"vistas ({num(ovl['False']['fpr_test'])}). <b>Conclusión:</b> el archivo de test tiene una distribución de "
-        "tráfico normal distinta de la del archivo de entrenamiento (un cambio de distribución), y como la "
-        "validación sale del mismo archivo que train, no lo podía detectar. Se reporta como limitación y no se "
-        "corrige con el test. Una v3 futura debería validar con particiones que imiten ese cambio y revisar la "
+        "tráfico normal distinta de la del archivo de entrenamiento (un cambio de distribución). La dependencia "
+        f"de <i>sttl</i> ya se veía en validación ({pct(st4['254']['pct_de_fp'], 0)} de las FP de v2, sección 2), "
+        "pero la validación sale del mismo archivo que train y no podía anticipar que en test ese segmento "
+        "pesaría el doble. Se reporta como limitación y no se corrige con el test. Una v3 futura debería validar con particiones que imiten ese cambio y revisar la "
         "dependencia de <i>sttl</i>.", P))
 
     # 6. Recuperación
