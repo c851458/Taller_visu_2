@@ -90,13 +90,19 @@ python -m src.evaluate_test       # exige evidencias/seleccion.json confirmado e
 python -m src.recompute_metrics   # recalcula métricas desde predicciones-test.csv
 ```
 
+## Empaquetar la entrega
+
+```bash
+bash scripts/empaquetar.sh entrega   # dist/proyecto-<commit>.zip con git archive (sin datos, entornos ni credenciales)
+```
+
 ## Estructura
 
 ```
 src/            código (download_data, prepare, train, export_mlflow, publish_hf,
                 select_model, evaluate_test, recompute_metrics, recovery, predict)
 configs/        parámetros, 4 experimentos, regla de selección, conclusiones
-scripts/        prueba_recuperacion.sh
+scripts/        prueba_recuperacion.sh, empaquetar.sh, generar_informe.py
 dvc.yaml/.lock  etapa prepare (datos preparados)
 data/raw.dvc    datos originales
 evidencias/     auditoria.json, experimentos.csv, seleccion.json, metricas-test.json,

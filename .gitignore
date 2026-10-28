@@ -14,3 +14,5 @@ mlflow.db
 # Credenciales: nunca a Git
 .env
 .dvc/config.local
+# Paquetes de entrega (scripts/empaquetar.sh)
+/dist/

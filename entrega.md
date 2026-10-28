@@ -55,6 +55,7 @@ dvc pull && python -m src.recovery verify-data
 python -m src.train configs/experiments/e1_logreg_base.yaml
 python src/predict.py --repo-id c851458/defiende-servidor-unsw --revision 9fb15e97dc936b6ba90bbdc73a8de92781462f75 --input evidencias/recuperacion/entrada.csv --output salida_v2.csv
 DAGSHUB_USER=<TU_USUARIO_DAGSHUB> DAGSHUB_TOKEN=<TU_TOKEN_DAGSHUB> bash scripts/prueba_recuperacion.sh https://github.com/c851458/Taller_visu_2.git "$(git rev-parse entrega)"
+bash scripts/empaquetar.sh entrega   # ZIP de la entrega desde el commit final
 ```
 
 ## Tiempo y recursos (Intel i5-10300H, 8 hilos, 8 GB RAM, WSL2, sin GPU)
