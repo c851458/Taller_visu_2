@@ -1,2 +1,5 @@
 [core]
     autostage = true
+    remote = origin
+['remote "origin"']
+    url = https://dagshub.com/c851458/Taller_visu_2.dvc
