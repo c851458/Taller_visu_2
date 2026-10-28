@@ -1,0 +1,36 @@
+{
+  "version": "v2",
+  "experiment_id": "e4_hgb_threshold",
+  "mlflow_run_id": "c5503f3f886f4309927f98bac0288479",
+  "hf_repo_id": "c851458/defiende-servidor-unsw",
+  "hf_revision": "9fb15e97dc936b6ba90bbdc73a8de92781462f75",
+  "model_sha256": "689fb002a0eaa577af78ee78cec88043a53e93fc17ae96a4f8aba4c93dda03e9",
+  "dataset_file": "data/prepared/test.csv (= UNSW_NB15_testing-set.csv completo + row_id/group_id)",
+  "dataset_sha256": "23db4edbf75bbb930a7a2a9af167d269c455a4b201312df8d0c9b0ac7609faed",
+  "raw_test_sha256": "734fe6642edf758f7c94d7d9149426b49d202fe8e7bf0bef47392489c3c0a559",
+  "rows_evaluated": 82332,
+  "threshold": 0.6574,
+  "threshold_rule": "y_pred = 1 si score_attack >= threshold",
+  "positive_class": "1 = ataque",
+  "zero_division_policy": "cociente indefinido -> 0.0, listado en undefined_metrics",
+  "metrics": {
+    "recall_attack": 0.9678152298597018,
+    "precision_attack": 0.8606261524579231,
+    "fpr": 0.19202702702702704,
+    "f1_attack": 0.9110788080157824,
+    "f1_normal": 0.8747110629955819,
+    "macro_f1": 0.8928949355056821,
+    "accuracy": 0.8959821211679542,
+    "confusion_matrix": {
+      "tn": 29895,
+      "fp": 7105,
+      "fn": 1459,
+      "tp": 43873
+    },
+    "n": 82332,
+    "undefined_metrics": []
+  },
+  "predictions_file": "evidencias/predicciones-test.csv",
+  "predictions_sha256": "dc8c5c4977b6420db9775d0fb7a9d755ce1c92f76cf2443e3dc137dbafdc17ad",
+  "evaluated_at_utc": "2026-10-28T15:14:53+00:00"
+}

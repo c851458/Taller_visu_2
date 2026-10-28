@@ -29,6 +29,7 @@
     },
     "model_sha256": "689fb002a0eaa577af78ee78cec88043a53e93fc17ae96a4f8aba4c93dda03e9",
     "threshold": 0.6574,
-    "mlflow_tracking_uri": "sqlite:///mlflow.db"
+    "mlflow_tracking_uri": "sqlite:///mlflow.db",
+    "card_update_revision": "b6b3a5950a22bbde67b237771cef3667c27da5f1"
   }
 }
